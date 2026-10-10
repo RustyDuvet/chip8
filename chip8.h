@@ -19,9 +19,13 @@ typedef struct {
     uint8_t sp;
     uint8_t delay_timer;
     uint8_t sound_timer;
-    uint8_t display[SCREEN_W * SCREEN_H]
+    uint8_t display[SCREEN_W * SCREEN_H];
     uint8_t keys[16];
+    bool draw_flag;
 } Chip8;
 
 void chip8_init(Chip8 *c);
 bool chip8_load_rom(Chip8 *c, const char *path);
+void chip8_cycle(Chip8 *c);
+
+#endif
