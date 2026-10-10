@@ -73,7 +73,7 @@ void chip8_cycle(Chip8 *c) {
     uint8_t y = (opcode >> 4) & 0xF;
     uint8_t n = opcode & 0xF;
     uint8_t nn = opcode & 0xFF;
-    uint8_t nnn = opcode & 0xFFF;
+    uint16_t nnn = opcode & 0xFFF;
 
     switch (opcode & 0xF000) {
         case 0x0000:

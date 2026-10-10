@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     //     printf("%02X ", c.memory[FONT_ADDR + 5 + i]);
     // printf("\n");
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 100; i++) {
         //printf("pc=0x%03X ", c.pc);
         chip8_cycle(&c);
         //printf("\n");
