@@ -192,6 +192,43 @@ void chip8_cycle(Chip8 *c) {
             c->draw_flag = true;
             break;
         }
+
+        case 0xE000:
+            switch(nn) {
+                case 0x9E:  // EX9E: skip next instruction if key VX is pressed
+                    if (c->keys[c->V[x] & 0xF]) c->pc += 2;
+                    break;
+                case 0xA1:  // EXA1: skip next instruction if key VX is NOT pressed
+                    if (!c->keys[c->V[x] & 0xF]) c->pc += 2;
+                    break;
+                default: goto unknown;
+            }
+            break;
+        
+        case 0xF000:
+            switch(nn) {
+                case 0x07:  // FX07: VX = delay timer
+                    c->V[x] = c->delay_timer;
+                    break;
+                
+                case 0x0A: {  // FX0A: wait for a key press, store it in VX
+                    bool pressed = false;
+                    for (int k = 0; k < 16; k++) {
+                        if (c->keys[k]) {
+                            c->V[x] = k;
+                            pressed = true;
+                            break;
+                        }
+                    }
+                    if (!pressed) c->pc -= 2;   // no key yet: re-run this instruction
+                    break;
+                }
+
+                case 0x15: c->delay_timer = c->V[x]; break;   // FX15: set delay timer
+                case 0x18: c->sound_timer = c->V[x]; break;   // FX18: set sound timer
+                case 0x1E: c->I += c->V[x];          break;   // FX1E: I += VX            
+                
+            }
         
         default:
         unknown:
